@@ -26,6 +26,7 @@ class TrieNode:
         self.is_end = False
         self.children = {}
 
+
 class Trie(object):
 
     def __init__(self):
@@ -73,38 +74,50 @@ class Trie(object):
 
         return recur(self.root, "\n")
 
+def find_valid_words(prev_words: list, trie: Trie, words_to_exclude: list, words_to_consider: list):
+
+    for word in filter(lambda word: word not in words_to_exclude, words):
+        # Iterate through each character position from a column perspective and check if the substrings are valid
+        # print("----" + word.upper())
+        tmp = ""
+        for i, char in enumerate(word):
+            current_substring = "".join([w[i] for w in prev_words]) + char
+            if len(trie.search(current_substring)) == 0:
+                break
+            tmp += current_substring[-1]
+            if len(tmp) == 5:
+                words_to_consider.append(tmp) 
+                # Maybe use another tree e.g. {"aback": {"bacon": {third_word...}, "baler": {third_word...}, ...}}
+    return words_to_consider
 
 def main():
-    tr = Trie()
+    trie = Trie()
     for word in words:
-        tr.insert(word)
-    
+        trie.insert(word)
+
     # Take example word: "aback"
 
     # |a|b|a|c|k|
-    # |a|b|a|s|e|
+    # |b|a|c|o|n|
     # | | | | | |
     # | | | | | |
     # | | | | | |
 
-    first = "aback"
+    first_word = ["aback"]
+    excludables = [first_word]
+    possible_words = []
+
+    second_words = find_valid_words(first_word, trie, excludables, possible_words)
+    print(second_words)
+    # for word in second_words:
+    #     excludables.append(word)
+    #     first_and_second_word = first_word
+    #     first_and_second_word.append(word)
+    #     print(first_and_second_word)
+    #     # print(find_valid_words(first_and_second_word,trie,excludables, possible_words))
+    #     first_and_second_word.pop()
+    #     print(first_and_second_word)
     
-    first_index = words.index(first) 
-    solution_array = [first]
-    # print(tr.search(first))
-
-    for i in range(first_index+1, len(words)):
-      # Iterate through each word in words alphabetically
-      current_word = words[i]
-      # Iterate through each character position from a column perspective and check if the substrings are valid
-      for index, _ in enumerate(current_word):
-        substring = first[index] + current_word[index]
-        if len(tr.search(substring)) == 0:
-          break
-        
-      
-        
-
 
     # with open("trie.txt", "a") as f:
     #     f.write(tr.__repr__())
