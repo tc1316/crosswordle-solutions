@@ -75,13 +75,6 @@ def threeByThree(words, trie):
     wildcards = [q for q in w]
     rows.append(r1)
 
-    # wildcards[0] = row1[0]
-    # cols.append(random.choice(trie.find(wildcards)))
-    # wildcards[0] = row1[2]
-    # cols.append(random.choice(trie.find(wildcards)))
-    # wildcards[0] = row1[4]
-    # cols.append(random.choice(trie.find(wildcards)))
-
     for idx in range(0, 5, 2):
         wildcards[0] = row1[idx]
         if trie.find(wildcards) == []:
@@ -107,7 +100,6 @@ def threeByThree(words, trie):
         return threeByThree(words, trie)
 
     rows.append(random.choice(trie.find(wildcards)))
-    print(rows, cols)
     final = [char.upper() for char in "".join([rows[0], cols[0][1], "*", cols[1][1], "*", cols[2][1], rows[1],
                                                cols[0][3], "*", cols[1][3], "*", cols[2][3], rows[2]])]
     return final
@@ -120,15 +112,6 @@ def main():
         trie.insert(word)
 
     print(threeByThree(words, trie))
-
-
-#   for idx, char in enumerate(diag):
-#     wildcards[idx] = diag[idx]
-#     output.append(random.choice(trie.find(wildcards)))
-#     wildcards[idx] = "?"
-
-#   final_output = [char.upper() for char in "".join(output)]
-#   print(final_output)
 
 
 if __name__ == "__main__":
