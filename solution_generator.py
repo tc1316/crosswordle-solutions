@@ -75,18 +75,19 @@ def main():
         trie.insert(word)
 
     with open("./outputs/diagonal.txt", "w") as f:
-        final_output = []
-        for _ in range(100):
-            final_output.append(generate_diagonal_solution(word_list, trie))
-        print(final_output, file=f)
+        f.write("[")
+        for _ in range(365):
+            output = generate_diagonal_solution(word_list, trie)
+            print(f"'{output}',", file=f)
+        f.write("]")
 
     with open("./outputs/three_by_three.txt", "w") as f:
-        final_output = []
-        for _ in range(100):
-            final_output.append(
-                generate_three_by_three_solution(word_list, trie))
-        print(final_output, file=f)
-
+        f.write("[")
+        for _ in range(365):
+            output = generate_three_by_three_solution(word_list, trie)
+            print(f"'{output}',", file=f)
+        f.write("]")
+ 
 
 if __name__ == "__main__":
     main()
