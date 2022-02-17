@@ -88,6 +88,12 @@ def main():
             print(f"'{output}',", file=f)
         f.write("]")
  
+    with open("./outputs/another_three_by_three.txt", "w") as f:
+        f.write("[")
+        for _ in range(365):
+            output = generate_three_by_three_solution(word_list, trie)
+            print(f"'{output}',", file=f)
+        f.write("]")
 
 if __name__ == "__main__":
     main()
