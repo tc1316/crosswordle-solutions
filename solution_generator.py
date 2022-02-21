@@ -20,13 +20,18 @@ def get_word_list():
 
 def generate_diagonal_solution(word_list, trie):
     diag = [char for char in random.choice(word_list)]
+    diag_word = "".join(diag)
     wildcards = [q for q in WILDCARD*5]
     output = []
 
-    for idx, _ in enumerate(diag):
+    idx = 0
+    while idx < len(diag):
         wildcards[idx] = diag[idx]
-        output.append(random.choice(trie.find(wildcards)))
-        wildcards[idx] = WILDCARD
+        candidate_word = random.choice(trie.find(wildcards))
+        if candidate_word not in output and candidate_word != diag_word:
+            output.append(candidate_word)
+            wildcards[idx] = WILDCARD
+            idx += 1
 
     return "".join(output)
 
@@ -81,19 +86,19 @@ def main():
             print(f"'{output}',", file=f)
         f.write("]")
 
-    with open("./outputs/three_by_three.txt", "w") as f:
-        f.write("[")
-        for _ in range(365):
-            output = generate_three_by_three_solution(word_list, trie)
-            print(f"'{output}',", file=f)
-        f.write("]")
+    # with open("./outputs/three_by_three.txt", "w") as f:
+    #     f.write("[")
+    #     for _ in range(365):
+    #         output = generate_three_by_three_solution(word_list, trie)
+    #         print(f"'{output}',", file=f)
+    #     f.write("]")
  
-    with open("./outputs/another_three_by_three.txt", "w") as f:
-        f.write("[")
-        for _ in range(365):
-            output = generate_three_by_three_solution(word_list, trie)
-            print(f"'{output}',", file=f)
-        f.write("]")
+    # with open("./outputs/another_three_by_three.txt", "w") as f:
+    #     f.write("[")
+    #     for _ in range(365):
+    #         output = generate_three_by_three_solution(word_list, trie)
+    #         print(f"'{output}',", file=f)
+    #     f.write("]")
 
 if __name__ == "__main__":
     main()
