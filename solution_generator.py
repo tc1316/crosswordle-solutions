@@ -37,17 +37,23 @@ def generate_diagonal_solution(word_list, trie):
 
 
 def generate_three_by_three_solution(word_list, trie):
+
+    def filter_duplicates(rows, cols, word_list):
+        filtered_list = list(filter(lambda word: word not in rows and word not in cols, word_list))
+        return filtered_list
+
     rows, cols = [], []
     top_row = random.choice(word_list)
     wildcards = [q for q in WILDCARD*5]
     rows.append(top_row)
-
+   
     for idx in range(0, 5, 2):
         wildcards[0] = top_row[idx]
-        if not trie.find(wildcards):
+        candidate_words_list = trie.find(wildcards)
+        if not candidate_words_list:
             return generate_three_by_three_solution(word_list, trie)
         else:
-            cols.append(random.choice(trie.find(wildcards)))
+            cols.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
 
     # Searching for valid word to put in the middle row
     wildcards[0] = WILDCARD
@@ -55,21 +61,24 @@ def generate_three_by_three_solution(word_list, trie):
     wildcards[2] = cols[1][2]
     wildcards[4] = cols[2][2]
 
-    if not trie.find(wildcards):
+    candidate_word = trie.find(wildcards)
+    if not candidate_word:
         return generate_three_by_three_solution(word_list, trie)
-    rows.append(random.choice(trie.find(wildcards)))
-
+    rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
+   
     # Searching for valid word to put in the last row
     wildcards[0] = cols[0][4]
     wildcards[2] = cols[1][4]
     wildcards[4] = cols[2][4]
 
-    if not trie.find(wildcards):
+    candidate_word = trie.find(wildcards)
+    if not candidate_word:
         return generate_three_by_three_solution(word_list, trie)
-    rows.append(random.choice(trie.find(wildcards)))
+    rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
 
     output = [rows[0], cols[0][1], "*", cols[1][1], "*", cols[2][1],
               rows[1], cols[0][3], "*", cols[1][3], "*", cols[2][3], rows[2]]
+    
     return "".join(output)
 
 
@@ -86,19 +95,19 @@ def main():
             print(f"'{output}',", file=f)
         f.write("]")
 
-    # with open("./outputs/three_by_three.txt", "w") as f:
-    #     f.write("[")
-    #     for _ in range(365):
-    #         output = generate_three_by_three_solution(word_list, trie)
-    #         print(f"'{output}',", file=f)
-    #     f.write("]")
+    with open("./outputs/three_by_three.txt", "w") as f:
+        f.write("[")
+        for _ in range(365):
+            output = generate_three_by_three_solution(word_list, trie)
+            print(f"'{output}',", file=f)
+        f.write("]")
  
-    # with open("./outputs/another_three_by_three.txt", "w") as f:
-    #     f.write("[")
-    #     for _ in range(365):
-    #         output = generate_three_by_three_solution(word_list, trie)
-    #         print(f"'{output}',", file=f)
-    #     f.write("]")
+    with open("./outputs/another_three_by_three.txt", "w") as f:
+        f.write("[")
+        for _ in range(365):
+            output = generate_three_by_three_solution(word_list, trie)
+            print(f"'{output}',", file=f)
+        f.write("]")
 
 if __name__ == "__main__":
     main()
