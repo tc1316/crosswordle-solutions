@@ -50,7 +50,7 @@ def generate_three_by_three_solution(word_list, trie):
     for idx in range(0, 5, 2):
         wildcards[0] = top_row[idx]
         candidate_words_list = trie.find(wildcards)
-        if not candidate_words_list:
+        if not candidate_words_list or not filter_duplicates(rows,cols,candidate_words_list):
             return generate_three_by_three_solution(word_list, trie)
         else:
             cols.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
@@ -61,20 +61,24 @@ def generate_three_by_three_solution(word_list, trie):
     wildcards[2] = cols[1][2]
     wildcards[4] = cols[2][2]
 
-    candidate_word = trie.find(wildcards)
-    if not candidate_word:
+    candidate_words_list = trie.find(wildcards)
+    if not candidate_words_list or not filter_duplicates(rows,cols,candidate_words_list):
         return generate_three_by_three_solution(word_list, trie)
-    rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
+    else:
+        print(candidate_words_list)
+        rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
    
     # Searching for valid word to put in the last row
     wildcards[0] = cols[0][4]
     wildcards[2] = cols[1][4]
     wildcards[4] = cols[2][4]
 
-    candidate_word = trie.find(wildcards)
-    if not candidate_word:
+    candidate_words_list = trie.find(wildcards)
+    if not candidate_words_list or not filter_duplicates(rows,cols,candidate_words_list):
         return generate_three_by_three_solution(word_list, trie)
-    rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
+    else:
+        print(candidate_words_list)
+        rows.append(random.choice(filter_duplicates(rows,cols,candidate_words_list)))
 
     output = [rows[0], cols[0][1], "*", cols[1][1], "*", cols[2][1],
               rows[1], cols[0][3], "*", cols[1][3], "*", cols[2][3], rows[2]]
